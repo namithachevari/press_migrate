@@ -1,0 +1,11 @@
+name: News Migrate
+description: News Migration from Drupal 7 to Drupal 8
+type: module
+core: 8.x
+package: Migration
+dependencies:
+  - migrate
+  - migrate_plus
+  - migrate_source_csv
+  - migrate_tools
+  - node

@@ -1,0 +1,71 @@
+dependencies:
+  module:
+    - migrate_source_csv
+id: news
+migration_tags:
+  - CSV
+migration_group: null
+label: News
+source:
+  plugin: csv
+  path: modules/custom/news_migrate/assets/csv/news.csv
+  header_row_count: 1
+  keys:
+    - id
+  column_names:
+    -
+      id: ID
+    -
+      title: Title
+    -
+      news_logo: 'News Logo'
+    -
+      alttext: Alttext
+    -
+      titletext: Titletext
+    -
+      news_url: 'News Url'
+    -
+      body: Body
+    -
+      useridnumber: 'UserIDNumber'
+    -
+      date: Date
+process:
+  type:
+    plugin: default_value
+    default_value: news
+  title: title
+  'field_news_logo/target_id': 
+    -
+      plugin: migration
+      migration: news_logo
+      source: news_logo
+      no_stub: true
+  'field_news_logo/alt':
+    -
+      plugin: get
+      source: alttext
+  'field_news_logo/title':
+    -
+      plugin: get
+      source: titletext
+  field_news_url: news_url
+  body/value: body
+  body/format: 
+    plugin: default_value
+    default_value: full_html
+  uid: 
+    plugin: default_value
+    default_value: 11
+  created:
+    plugin: callback
+    source: date
+    callable: strtotime
+    created: date
+    changed: '@created'
+destination:
+  plugin: 'entity:node'
+migration_dependencies:
+  optional:
+    - news_logo
